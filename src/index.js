@@ -36,9 +36,38 @@ const MORSE_TABLE = {
     '----.':  '9',
     '-----':  '0',
 };
+// console.log(MORSE_TABLE['-.-.'])
 
 function decode(expr) {
-    // write your solution here
+    let arr = []; // объявляем пустой массив
+    let exprLength = expr.length; // длина входящей строки
+    let numberOfexpr = exprLength / 10; // длина закодированной буквы
+    
+
+    //! перебираем всю входящую строку, разбиваем на длину по 10 знаков на каждую букву и записываем в массив arr
+    for (let i = 0; i < numberOfexpr; i++) {
+        arr.push(expr.slice(i * 10, (i + 1) * 10)); // каждые 10 элементов строки отправляются в массив
+    }
+
+    let newArr = arr.map((space) => { // объявлем новый массив с расшифровкой входящих 10 и 11
+        if (space == '**********') { //! по заданию '**********' = пробелу
+            return ' ';
+        } else {  
+            let result = ''; // нейтральный элемент
+            let str = Number(space).toString(); //! для того чтобы убрать лишнии 0 необходимо перевести строку в число, а затем вернуть строковое значение для дайльнейшей расшифроки  '10' и '11'
+            
+            for (let i = 0; i < str.length; i++) {
+                if (str.slice(i * 2, (i + 1) * 2) === '10') { //! по заданию '10' = '.'
+                    result += '.';
+                } else if (str.slice(i * 2, (i + 1) * 2) === '11') { //! по заданию '11' = '-'
+                    result += '-';
+                }
+            } 
+            return MORSE_TABLE[result];
+         }
+});
+result = newArr.join(""); // объединяем все элементы массива в строку.
+return result;
 }
 
 module.exports = {
